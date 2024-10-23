@@ -1,4 +1,30 @@
+use std::fmt;
+
+struct List(Vec<i32>);
+
+impl fmt::Display for List {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let vec = &self.0;
+
+        write!(f, "[")?;
+
+        for (count, v) in vec.iter().enumerate() {
+            if count != 0 {
+                write!(f, ", ")?;
+            }
+
+            write!(f, "{0}:{1}", count, v)?;
+        }
+
+        write!(f, "]")
+    }
+}
+
 fn printer() {
+    let v = List(vec![1, 2, 3]);
+
+    println!("{}", v);
+
     println!(
         "This is the first element: {0} and second: {1} and first again: {0}",
         "1st", "2nd"
@@ -17,13 +43,14 @@ fn printer() {
 
     println!("My name is {0}, {1} {0}", "Bond", "James");
 
-    #[allow(dead_code)] // disable `dead_code` which warn against unused module
+    let pi = 3.141592;
+    println!("Pi is roughly `{pi:.3}`");
+
+    #[allow(dead_code)]
+    #[derive(Debug)]
     struct Structure(i32);
 
-    let pi = 3.141592;
-    // println!("Pi is roughly `{pi:.3}`");
-
-    // format!("This struct `{:#?}` won't print...", Structure(3));
+    println!("This struct {:#?} won't print...", Structure(3));
     // TODO ^ Try uncommenting this line
 }
 

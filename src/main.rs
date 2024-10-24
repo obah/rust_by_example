@@ -72,7 +72,26 @@ fn binary_search(arr: &[u32], num: u32, min: usize, max: usize) -> usize {
     }
 }
 
+fn primitives() {
+    let tuple_1 = (43u8, (50i32, false), true, 4.3f32, 2555i16, "hey", 'i');
+
+    println!(
+        "this is the first element in the tuple element in the tuple: {}",
+        tuple_1.1 .0
+    );
+
+    println!("this is the tuple in the tuple: {:?}", tuple_1.1);
+
+    let (a, b) = tuple_1.1;
+
+    println!("{:?} & {:?}", a, b);
+
+    println!("One element tuple: {:?}", (5u32,));
+    println!("Just an integer: {:?}", (5u32));
+}
+
 fn main() {
+    primitives();
     let primes: [u32; 25] = [
         2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
         97,

@@ -2,6 +2,28 @@ use std::fmt;
 
 struct List(Vec<i32>);
 
+//unit struct - use for generics
+struct Unit;
+
+//tuple struct - named tuples
+struct Pair(i32, f32);
+//regular struct
+struct Point {
+    x: u32,
+    y: u32,
+}
+
+struct Rectangle {
+    top_left: Point,
+    bottom_right: Point,
+}
+
+#[derive(Debug)]
+struct Person {
+    name: String,
+    height: f32,
+}
+
 impl fmt::Display for List {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let vec = &self.0;
@@ -17,6 +39,38 @@ impl fmt::Display for List {
         }
 
         write!(f, "]")
+    }
+}
+
+enum WebEvent {
+    //variant can be unit
+    PageLoad,
+    PageUnload,
+    //like tuple struct
+    KeyPress(char),
+    Paste(String),
+    //regular struct
+    Click { x: i64, y: i64 },
+}
+
+enum Role {
+    Student,
+    Teacher,
+}
+
+//enum can be like struct
+enum Color {
+    Black = 0x000000,
+    White = 0xFFFFFF,
+}
+
+fn inspect(event: WebEvent) {
+    match event {
+        WebEvent::PageLoad => println!("Page loaded"),
+        WebEvent::PageUnload => println!("Page unloaded"),
+        WebEvent::KeyPress(_char) => println!("{_char} was pressed"),
+        WebEvent::Paste(_string) => println!("{_string} was pasted"),
+        WebEvent::Click { x, y } => println!("coordinates {x} and {y} were clicked."),
     }
 }
 
@@ -90,6 +144,18 @@ fn primitives() {
     println!("Just an integer: {:?}", (5u32));
 }
 
+fn rect_area(_rect: Rectangle) -> u32 {
+    let Rectangle {
+        top_left: Point { x: x1, y: y1 },
+        bottom_right: Point { x: x2, y: y2 },
+    } = _rect;
+
+    let side1 = y2 - y1;
+    let side2 = x2 - x1;
+
+    side1 * side2
+}
+
 fn main() {
     primitives();
     let primes: [u32; 25] = [
@@ -104,4 +170,46 @@ fn main() {
     println!("found number in {result}");
 
     printer();
+
+    let _unit = Unit;
+
+    let _pait = Pair(10, 10.0);
+
+    let _point_1 = Point { x: 0, y: 0 };
+    let _point_2 = Point { x: 15, y: 8 };
+
+    let _rect1 = Rectangle {
+        top_left: _point_1,
+        bottom_right: _point_2,
+    };
+
+    let _rect1_area = rect_area(_rect1);
+
+    let name = String::from("James");
+    let height = 6.1;
+
+    let james = Person { name, height };
+
+    println!("New created struct person has {:?}", james);
+
+    println!("area of the rectange is {_rect1_area}");
+
+    let load = WebEvent::PageLoad;
+    let unload = WebEvent::PageUnload;
+    let pressed = WebEvent::KeyPress('c');
+    //to_owned() creates an owned string from a string slice
+    let paste = WebEvent::Paste("this is fun".to_owned());
+    let click = WebEvent::Click { x: 2, y: 2 };
+
+    inspect(load);
+    inspect(unload);
+    inspect(pressed);
+    inspect(paste);
+    inspect(click);
+
+    //use use to make an enum available without manual scoping
+    use crate::Role::*;
+    let role = Student;
+
+    println!("The color is {}", Color::White as i32)
 }

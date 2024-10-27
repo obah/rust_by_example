@@ -211,5 +211,33 @@ fn main() {
     use crate::Role::*;
     let role = Student;
 
-    println!("The color is {}", Color::White as i32)
+    println!("The color is {}", Color::White as i32);
+
+    let test_var = "First";
+
+    {
+        //shadowing
+        let test_var = "shadowed";
+
+        println!("current test_var is {:?}", test_var);
+    }
+    println!("first test_var outside block is {:?}", test_var);
+
+    let test_var = "second";
+
+    println!("second shadowed test_var is {:?}", test_var);
+
+    let float_1 = 65.4344;
+    let int_1 = float_1 as u8;
+    let char_1 = int_1 as char;
+
+    println!("float value is {float_1}, u8 value is {int_1} and character is {char_1}");
+
+    // let char_2 = float_1 as char; // doesnt work because only u8 can be casted to char
+
+    println!(" 128 as a i16 is: {}", 128 as i16);
+
+    // println!(" 128 as a i8 is : {}", 128 as i8); wont work
+
+    // println!("1000 as a u8 is : {}", 1000 as u8); //wont work also
 }

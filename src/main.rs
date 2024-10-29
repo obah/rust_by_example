@@ -1,4 +1,33 @@
+use std::convert::From;
+use std::convert::Into;
 use std::fmt;
+
+mod test_mod;
+
+//type aliasing is just like creating a type in typescript and we use UpperCamelCase for naming
+type CustomType = u64;
+
+enum WebEvent {
+    //variant can be unit
+    PageLoad,
+    PageUnload,
+    //like tuple struct
+    KeyPress(char),
+    Paste(String),
+    //regular struct
+    Click { x: i64, y: i64 },
+}
+
+enum Role {
+    Student,
+    Teacher,
+}
+
+//enum can be like struct
+enum Color {
+    Black = 0x000000,
+    White = 0xFFFFFF,
+}
 
 struct List(Vec<i32>);
 
@@ -24,6 +53,16 @@ struct Person {
     height: f32,
 }
 
+#[derive(Debug)]
+struct Number {
+    value: i32,
+}
+
+#[derive(Debug)]
+struct Circle {
+    radius: i32,
+}
+
 impl fmt::Display for List {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let vec = &self.0;
@@ -42,26 +81,23 @@ impl fmt::Display for List {
     }
 }
 
-enum WebEvent {
-    //variant can be unit
-    PageLoad,
-    PageUnload,
-    //like tuple struct
-    KeyPress(char),
-    Paste(String),
-    //regular struct
-    Click { x: i64, y: i64 },
+//
+impl From<i32> for Number {
+    fn from(item: i32) -> Self {
+        Number { value: item }
+    }
 }
 
-enum Role {
-    Student,
-    Teacher,
-}
+// impl Into<Number> for i32 {
+//     fn into(self) -> Number {
+//         Number { value: self }
+//     }
+// }
 
-//enum can be like struct
-enum Color {
-    Black = 0x000000,
-    White = 0xFFFFFF,
+impl fmt::Display for Circle {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Radius of the circle is {}", self.radius)
+    }
 }
 
 fn inspect(event: WebEvent) {
@@ -157,87 +193,115 @@ fn rect_area(_rect: Rectangle) -> u32 {
 }
 
 fn main() {
-    primitives();
-    let primes: [u32; 25] = [
-        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
-        97,
-    ];
+    // primitives();
+    // let primes: [u32; 25] = [
+    //     2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89,
+    //     97,
+    // ];
 
-    let max1 = primes.len();
+    // let max1 = primes.len();
 
-    let result = binary_search(&primes, 67, 0, max1);
+    // let result = binary_search(&primes, 67, 0, max1);
 
-    println!("found number in {result}");
+    // println!("found number in {result}");
 
-    printer();
+    // printer();
 
-    let _unit = Unit;
+    // let _unit = Unit;
 
-    let _pait = Pair(10, 10.0);
+    // let _pait = Pair(10, 10.0);
 
-    let _point_1 = Point { x: 0, y: 0 };
-    let _point_2 = Point { x: 15, y: 8 };
+    // let _point_1 = Point { x: 0, y: 0 };
+    // let _point_2 = Point { x: 15, y: 8 };
 
-    let _rect1 = Rectangle {
-        top_left: _point_1,
-        bottom_right: _point_2,
-    };
+    // let _rect1 = Rectangle {
+    //     top_left: _point_1,
+    //     bottom_right: _point_2,
+    // };
 
-    let _rect1_area = rect_area(_rect1);
+    // let _rect1_area = rect_area(_rect1);
 
-    let name = String::from("James");
-    let height = 6.1;
+    // let name = String::from("James");
+    // let height = 6.1;
 
-    let james = Person { name, height };
+    // let james = Person { name, height };
 
-    println!("New created struct person has {:?}", james);
+    // println!("New created struct person has {:?}", james);
 
-    println!("area of the rectange is {_rect1_area}");
+    // println!("area of the rectange is {_rect1_area}");
 
-    let load = WebEvent::PageLoad;
-    let unload = WebEvent::PageUnload;
-    let pressed = WebEvent::KeyPress('c');
-    //to_owned() creates an owned string from a string slice
-    let paste = WebEvent::Paste("this is fun".to_owned());
-    let click = WebEvent::Click { x: 2, y: 2 };
+    // let load = WebEvent::PageLoad;
+    // let unload = WebEvent::PageUnload;
+    // let pressed = WebEvent::KeyPress('c');
+    // //to_owned() creates an owned string from a string slice
+    // let paste = WebEvent::Paste("this is fun".to_owned());
+    // let click = WebEvent::Click { x: 2, y: 2 };
 
-    inspect(load);
-    inspect(unload);
-    inspect(pressed);
-    inspect(paste);
-    inspect(click);
+    // inspect(load);
+    // inspect(unload);
+    // inspect(pressed);
+    // inspect(paste);
+    // inspect(click);
 
-    //use use to make an enum available without manual scoping
-    use crate::Role::*;
-    let role = Student;
+    // //use use to make an enum available without manual scoping
+    // use crate::Role::*;
+    // let role = Student;
 
-    println!("The color is {}", Color::White as i32);
+    // println!("The color is {}", Color::White as i32);
 
-    let test_var = "First";
+    // let test_var = "First";
 
-    {
-        //shadowing
-        let test_var = "shadowed";
+    // {
+    //     //shadowing
+    //     let test_var = "shadowed";
 
-        println!("current test_var is {:?}", test_var);
-    }
-    println!("first test_var outside block is {:?}", test_var);
+    //     println!("current test_var is {:?}", test_var);
+    // }
+    // println!("first test_var outside block is {:?}", test_var);
 
-    let test_var = "second";
+    // let test_var = "second";
 
-    println!("second shadowed test_var is {:?}", test_var);
+    // println!("second shadowed test_var is {:?}", test_var);
 
-    let float_1 = 65.4344;
-    let int_1 = float_1 as u8;
-    let char_1 = int_1 as char;
+    // let float_1 = 65.4344;
+    // let int_1 = float_1 as u8;
+    // let char_1 = int_1 as char;
 
-    println!("float value is {float_1}, u8 value is {int_1} and character is {char_1}");
+    // println!("float value is {float_1}, u8 value is {int_1} and character is {char_1}");
 
-    // let char_2 = float_1 as char; // doesnt work because only u8 can be casted to char
+    // // let char_2 = float_1 as char; // doesnt work because only u8 can be casted to char
 
-    println!(" 128 as a i16 is: {}", 128 as i16);
+    // println!(" 128 as a i16 is: {}", 128 as i16);
 
-    // println!(" 128 as a i8 is : {}", 128 as i8); wont work
+    // // println!(" 128 as a i8 is : {}", 128 as i8); wont work
 
-    // println!("1000 as a u8 is : {}", 1000 as u8); //wont work also
+    // // println!("1000 as a u8 is : {}", 1000 as u8); //wont work also
+    // let literal_int = 120u8;
+
+    // println!(
+    //     "size of literal_int in bytes: {}",
+    //     std::mem::size_of_val(&literal_int)
+    // );
+
+    // let custom_val: CustomType = 20 as u64;
+
+    // let str_1 = "string";
+    // let str_2 = String::from(str_1);
+
+    // println!("string is {str_1} in &str form and {str_2} in string form");
+
+    // let num_1 = Number::from(23);
+    // println!("New num_1 is {:?}", num_1);
+
+    // let num_2 = 10;
+    // let num_3: Number = num_2.into();
+
+    // println!("{num_2} is {:?} when into is used", num_3);
+
+    // let circle_1 = Circle { radius: 10 };
+
+    // println!("Circle ToString is {}", circle_1.to_string());
+    // println!("Circle is {:?}", circle_1);
+    test_mod::public_fn();
+    test_mod::nested_mod::public_fn();
 }

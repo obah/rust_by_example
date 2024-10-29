@@ -1,3 +1,4 @@
+use rand::Rng;
 use std::convert::From;
 use std::convert::Into;
 use std::fmt;
@@ -304,4 +305,9 @@ fn main() {
     println!("Circle is {:?}", circle_1);
     test_mod::public_fn();
     test_mod::nested_mod::public_fn();
+
+    let mut rng = rand::thread_rng();
+    let x: u8 = rng.gen();
+
+    println!("Random number is {x}")
 }

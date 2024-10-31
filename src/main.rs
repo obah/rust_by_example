@@ -3,6 +3,7 @@ use std::convert::From;
 use std::convert::Into;
 use std::fmt;
 
+mod control_flow;
 mod test_mod;
 
 //type aliasing is just like creating a type in typescript and we use UpperCamelCase for naming
@@ -141,8 +142,7 @@ fn printer() {
     #[derive(Debug)]
     struct Structure(i32);
 
-    println!("This struct {:#?} won't print...", Structure(3));
-    // TODO ^ Try uncommenting this line
+    println!("This struct {:#?} would print...", Structure(3));
 }
 
 fn binary_search(arr: &[u32], num: u32, min: usize, max: usize) -> usize {
@@ -309,5 +309,13 @@ fn main() {
     let mut rng = rand::thread_rng();
     let x: u8 = rng.gen();
 
-    println!("Random number is {x}")
+    println!("Random number is {x}");
+
+    //from this point modules has been learnt but Oba was too lazy to modularize the previous code :(
+    // control_flow::get_loop();
+    // control_flow::nested_loop();
+    // control_flow::fizzbuzz();
+    // control_flow::for_loop();
+    // control_flow::match_loop(10, false);
+    control_flow::if_let();
 }
